@@ -33,10 +33,10 @@
 			</div>
 		</div>
 
-		<div class="marquee" id="marquee"><h2><span>COMING SOON. CHECK YOUR LOCAL LISTINGS. NEXT EPISODES: JULY 9 BROOKLYN, NY / AUGUST 31 MONTAUK, NY / OCTOBER 1 PARIS, FRANCE / DECEMBER 5 MIAMI, FLORIDA.</span></h2></div>
+		<div class="marquee" id="marquee"><h2><span>NEW SITE COMING JULY 21. COMING SOON. CHECK YOUR LOCAL LISTINGS. NEXT EPISODES: JULY 9 BROOKLYN, NY / AUGUST 31 MONTAUK, NY / OCTOBER 1 PARIS, FRANCE / DECEMBER 5 MIAMI, FLORIDA.</span></h2></div>
 
 		<div class="fitvids" id="player-div">
-			<iframe id="ep1" width="900" type="text/html" height="506" src="https://www.youtube.com/embed/iRZ2Sh5-XuM?enablejsapi=1&showinfo=0&autohide=1&controls=2&rel=0&origin=file://localhost/Users/Dylan/Documents/Projects/_safehouse/tv%20party/index.html" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>
+			<iframe id="ep1" width="900" type="text/html" height="506" src="https://www.youtube.com/embed/NFvccjTCRIA?enablejsapi=1&loop=1&showinfo=0&autohide=1&controls=2&rel=0&origin=file://localhost/Users/Dylan/Documents/Projects/_safehouse/tv%20party/index.html" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>
 			<div id="social-media">
 				<span class="fa fa-stack">
 					<span class="fa fa-circle fa-stack-2x"></span>
@@ -60,12 +60,6 @@
 					<span class="fa fa-circle fa-stack-2x"></span>
 					<a target="_newtab" href="https://www.facebook.com/safehousebk">
 						<span class="fa fa-youtube fa-stack-1x"></span>
-					</a>
-				</span>
-				<span class="fa fa-stack">
-					<span class="fa fa-circle fa-stack-2x"></span>
-					<a target="_newtab" href="http://vimeo.com/safehousebk">
-						<span class="fa fa-vimeo-square fa-stack-1x"></span>
 					</a>
 				</span>
 			</div>
@@ -271,7 +265,7 @@
 				function randomizeParams() {
 
 					badTVParams.distortion = Math.random()*10+0.1;
-					badTVParams.distortion2 =Math.random()*10+0.1;
+					badTVParams.distortion2 = 0.5;
 					badTVParams.speed =Math.random()*.3;
 					rgbParams.angle = Math.random()*2;
 					rgbParams.amount = Math.random()*0.03;
@@ -330,12 +324,12 @@
 
 					xtime = Math.sin(shaderTime);
 					if (!pause)
-						badTVParams.distortion = 10000/(1000*shaderTime)+ Math.log(Math.cos((xtime+1)*2)+3.81,1.1)/Math.random()/8;
+						badTVParams.distortion = 10000/(1000*shaderTime)+ Math.log(Math.cos((xtime+1)*2)+3.81,1.1)/15;
 					else {
 						
-						badTVParams.distortion = Math.pow(Math.cos((xtime+1)*2)+3.81,1.1)/Math.random()/8*badTVParams.distortion;
+						badTVParams.distortion = Math.pow(Math.cos((xtime+1)*2)+3.81,1.1)/Math.random()/8*badTVParams.distortion
 					}
-					badTVParams.distortion2 = 10/(Math.random()*9.5+.1);
+					badTVParams.distortion2 = .5;
 					badTVParams.speed = .3-(Math.sin(Math.cos(4*shaderTime))*.01);
 					rgbParams.angle = 2+Math.cos(xtime)*3;
 					rgbParams.amount = (xtime)*0.004+Math.cos(xtime)*.001;
