@@ -51,15 +51,6 @@ h1, h2, h3, h4, h5, h6 {
   margin: 40px 0;
 }
 
-@media only screen and (min-width: 415px) {
-  .content {
-    display: block;
-  }
-
-  #mobile-placeholder {
-    display: none;
-  }
-}
 /* PHONE&PHABLET > TABLET > LAPTOP&DESKTOP */
 /* PHONE&PHABLET : <= 414 */
 body {
@@ -243,69 +234,6 @@ body {
     opacity: .8;
   }
 }
-
-/* #111 */
-@font-face {
-  font-family: 'Inform';
-  src: url("../fonts/Inform_Bold.otf");
-}
-html {
-  margin: 0;
-}
-
-body {
-  /*background: url('../img/fuzz2.jpg') no-repeat center center fixed;*/
-  background: rgba(10, 10, 10, 0.93);
-  font-family: "Lato", sans-serif;
-}
-
-/* Override mobile header offset bug */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: normal;
-  font-style: normal;
-}
-
-/* media query breaks and content widths */
-/* nav dimensions for sidebar / up top */
-/* Animations */
-.fade {
-  opacity: 0;
-  -webkit-transition: opacity 300ms ease;
-          transition: opacity 300ms ease;
-}
-
-.fade.in {
-  opacity: 1;
-}
-
-.content {
-  display: none;
-}
-
-.coming-soon {
-  display: block;
-  /* mobile first, show the warning */
-  margin-top: 225px;
-  font: 72px 'Inform';
-  text-align: center;
-}
-
-#mobile-placeholder {
-  margin-top: 90px;
-}
-#mobile-placeholder h6 {
-  margin: 40px 0;
-}
-
-@media only screen and (min-width: 415px) {
-  .content {
-    display: block;
-  }
-
-  .coming-soon {
-    display: none;
-  }
-}
 /* MOBILE FIRST STYLE */
 .content {
   /* just for now */
@@ -314,11 +242,6 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0;
   color: rgba(255, 255, 255, 0.9);
   /* Bootstrap tab styles */
-  /* this aint really mobile first is it */
-  /* When window < 768, content no longer repsonsive */
-  /*.player-contianer {
-    width: $b0 - $sidebar-w;
-  }*/
 }
 .content .tab-content > .tab-pane {
   display: none;
@@ -330,73 +253,12 @@ h1, h2, h3, h4, h5, h6 {
   margin: 15px 0 15px 15px;
 }
 
-/* only screen and (min-width : 400px), */
-/* > 767 */
-/*@media only screen and (min-width : $b0) {
-  .content {
-    display: block;
-  }
-}*/
-
-/* #111 */
-@font-face {
-  font-family: 'Inform';
-  src: url("../fonts/Inform_Bold.otf");
-}
-html {
-  margin: 0;
-}
-
-body {
-  /*background: url('../img/fuzz2.jpg') no-repeat center center fixed;*/
-  background: rgba(10, 10, 10, 0.93);
-  font-family: "Lato", sans-serif;
-}
-
-/* Override mobile header offset bug */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: normal;
-  font-style: normal;
-}
-
-/* media query breaks and content widths */
-/* nav dimensions for sidebar / up top */
-/* Animations */
-.fade {
-  opacity: 0;
-  -webkit-transition: opacity 300ms ease;
-          transition: opacity 300ms ease;
-}
-
-.fade.in {
-  opacity: 1;
-}
-
-.content {
-  display: none;
-}
-
-.coming-soon {
-  display: block;
-  /* mobile first, show the warning */
-  margin-top: 225px;
-  font: 72px 'Inform';
-  text-align: center;
-}
-
-#mobile-placeholder {
-  margin-top: 90px;
-}
-#mobile-placeholder h6 {
-  margin: 40px 0;
-}
-
 @media only screen and (min-width: 415px) {
   .content {
     display: block;
   }
 
-  .coming-soon {
+  #mobile-placeholder {
     display: none;
   }
 }
