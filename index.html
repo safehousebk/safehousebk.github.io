@@ -1,517 +1,230 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8" />
-		<meta name="description" content="TV PARTY"/>
-		<meta name="viewport" content="width=device-width"/>
-
-		<title>TV PARTY</title>
-
-		<link href='http://fonts.googleapis.com/css?family=Alegreya+Sans+SC:100' rel='stylesheet prefetch' type='text/css'>
-		<link type="text/css" rel="stylesheet" href="css/lib/font-awesome-4.1.0/css/font-awesome.min.css"/>
-		<link type="text/css" rel="stylesheet" href="css/main.css"/>
-
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script type="text/javascript" src="js/lib/jquery.fitvids.js"></script>
-		<script type="text/javascript" src="js/lib/jquery.fittext.js"></script>
-		<script type="text/javascript" src="js/lib/prefixfree.js"></script>
-	</head>
-	<body>
-
-		<div class="body-fade"></div>
-
-		<div id="title-container-center">
-			<div id="title-container">
-				<h1>TV PARTY</h1>
-				<span>TV PARTY</span>
-				<span>TV PARTY</span>
-				<span>TV PARTY</span>
-				<span>TV PARTY</span>
-				<span>TV PARTY</span>
-				<span>TV PARTY</span>
-				<span>TV PARTY</span>
-			</div>
-		</div>
-
-		<div class="marquee" id="marquee"><h2><span>NEW SITE COMING SOON. CHECK YOUR LOCAL LISTINGS.</span></h2></div>
-
-
-		<div class="fitvids" id="player-div">
-			<iframe id="ep1" width="900" type="text/html" height="506" src="https://www.youtube.com/embed/HlQSL-MLLOI?enablejsapi=1&loop=1&showinfo=0&autohide=1&controls=2&rel=0" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowfullscreen></iframe>
-			<div id="social-media">
-				<span class="fa fa-stack">
-					<span class="fa fa-circle fa-stack-2x"></span>
-					<a target="_newtab" href="https://www.facebook.com/tvpartylive">
-						<span class="fa fa-facebook fa-stack-1x"></span>
-					</a>
-				</span>
-				<span class="fa fa-stack">
-					<span class="fa fa-circle fa-stack-2x"></span>
-					<a target="_newtab" href="https://twitter.com/TVPartyLive">
-						<span class="fa fa-twitter fa-stack-1x"></span>
-					</a>
-				</span>
-				<span class="fa fa-stack">
-					<span class="fa fa-circle fa-stack-2x"></span>
-					<a target="_newtab" href="http://instagram.com/tvpartylive">
-						<span class="fa fa-instagram fa-stack-1x"></span>
-					</a>
-				</span>
-				<span class="fa fa-stack">
-					<span class="fa fa-circle fa-stack-2x"></span>
-					<a target="_newtab" href="https://www.youtube.com/user/TVPartyLive">
-						<span class="fa fa-youtube fa-stack-1x"></span>
-					</a>
-				</span>
-			</div>
-		</div>
-
-
-		<div id="footer">
-			<div id="sponsors" class="font-effect-anaglyph">
-				<h5>PARTICIPATING SPONSORS</h5>
-			</div>
-			<div id="footer-pics">
-				<img src="img/cnf.png" />
-				<img src="img/jcrew.png" />
-				<img src="img/momaps1.png" />
-				<img src="img/sleepyjones.png" />
-				<img src="img/redbull.png" />
-				<img src="img/absolutelyx.png" />
-			</div>
-			<div id="logo">
-				<a target="_newtab" href="http://www.safehousebk.com/">
-					<img src="img/safehouse.png" />
-				</a>
-			</div>
-		</div>
-
-		
-
-
-		<script src="js/lib/three.min.js"></script>
-		<script type="text/javascript" src="js/lib/ColladaLoader.js"></script>
-		<script src="js/lib/postprocessing/EffectComposer.js"></script>
-		<script src="js/lib/postprocessing/RenderPass.js"></script>
-		<script src="js/lib/postprocessing/ShaderPass.js"></script>
-		<script src="js/lib/postprocessing/MaskPass.js"></script> 
-		<script src="js/lib/shaders/CopyShader.js"></script>
-		<script src="js/lib/shaders/FilmShader.js"></script>
-		<script src="js/lib/shaders/RGBShiftShader.js"></script>
-		<script src="js/lib/BadTVShader.js"></script>
-		<script src="js/lib/StaticShader.js"></script>
-
-		<script>
-
-			// WebGL 
-			function webgl_support() { 
-			    try{
-			    var canvas = document.createElement( 'canvas' ); 
-			    return !! window.WebGLRenderingContext && ( 
-			         canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) );
-			   }catch( e ) { console.log(e); return false; } 
-			};
-
-
-
-
-			if (webgl_support()) {
-
-				//Gratefully modified version of:
-				//Bad TV Effect Demo
-				//Using Three.js r.66
-				//by Felix Turner / www.airtight.cc / @felixturner
-
-				var camera, scene, renderer;
-				var video, videoTexture,videoMaterial;
-				var composer;
-				var seed = Math.random();
-				var shaderTime = 0 + seed;
-				var badTVParams, badTVPass;		
-				var staticParams, staticPass;		
-				var rgbParams, rgbPass;	
-				var filmParams, filmPass;	
-				var renderPass, copyPass;
-				var gui;
-				var pnoise, globalParams;
-				var timer = 0;
-				var xtime;
-				var src;
-				var pause = false;
-				var prev, picIndex = Math.floor(Math.random()*6)+1;
-				// var prev, picIndex = 1;
-
-	
-				function preload(imgArray) {
-					$(imgArray).each(function() {
-						$('<img/>')[0].src = this;
-					});
-				}
-
-				function init() {
-
-					preload([
-						'img/1tvparty.jpg',
-						'img/2tvparty.jpg',
-						'img/3tvparty.jpg',
-						'img/4tvparty.jpg',
-						'img/5tvparty.jpg',
-						'img/6tvparty.jpg',
-					]);
-
-					camera = new THREE.PerspectiveCamera(55, 1080/ 720, 20, 3000);
-					camera.position.z = 800;
-					scene = new THREE.Scene();
-
-					// //Load Video
-					video = document.createElement( 'img' );
-					video.setAttribute("id", "party-pic");
-					src = "img/" + picIndex + "tvparty.jpg";
-					video.src = src;
-
-					//init video texture
-					videoTexture = new THREE.Texture( video );
-					videoTexture.minFilter = THREE.LinearFilter;
-					videoTexture.magFilter = THREE.LinearFilter;
-
-					videoMaterial = new THREE.MeshBasicMaterial( {
-						map: videoTexture
-					} );
-
-					//Add video plane
-					var planeGeometry = new THREE.PlaneGeometry( 1080, 720,1,1 );
-					var plane = new THREE.Mesh( planeGeometry, videoMaterial );
-					scene.add( plane );
-					plane.z = 0;
-					plane.scale.x = plane.scale.y = 1.45;
-
-					//init renderer
-					renderer = new THREE.WebGLRenderer();
-					renderer.setSize( 800, 600 );
-					document.body.appendChild( renderer.domElement );
-
-					//POST PROCESSING
-					//Create Shader Passes
-					renderPass = new THREE.RenderPass( scene, camera );
-					badTVPass = new THREE.ShaderPass( THREE.BadTVShader );
-					rgbPass = new THREE.ShaderPass( THREE.RGBShiftShader );
-					filmPass = new THREE.ShaderPass( THREE.FilmShader );
-					staticPass = new THREE.ShaderPass( THREE.StaticShader );
-					copyPass = new THREE.ShaderPass( THREE.CopyShader );
-
-					//set shader uniforms
-					filmPass.uniforms[ "grayscale" ].value = 0;
-
-					//Init DAT GUI control panel
-					badTVParams = {
-						mute:false,
-						show: true,
-						distortion: 0.1,
-						distortion2: 0.1,
-						speed: 0.0,
-						rollSpeed: 0.0
-					}
-
-					staticParams = {
-						show: true,
-						amount:0.0,
-						size2:0.1
-					}
-
-					rgbParams = {
-						show: true,
-						amount: 0.000,
-						angle: 0.0,
-					}
-
-					filmParams = {
-						show: true,
-						count: 0,
-						sIntensity: 0.0,
-						nIntensity: 0.0
-					}
-					
-					onToggleShaders();
-					onToggleMute();
-					onParamsChange();
-
-					window.addEventListener('resize', onResize, false);
-					renderer.domElement.addEventListener('click', function() {
-						clearInterval(intervalID);
-						randomizeParams();
-						intervalID = setInterval(function(){randomizeParams();}, 6000);
-					}, false);
-					onResize();
-				}
-
-				function onParamsChange() {
-
-					//copy initial params into shader uniforms
-					badTVPass.uniforms[ "distortion" ].value = badTVParams.distortion;
-					badTVPass.uniforms[ "distortion2" ].value = badTVParams.distortion2;
-					badTVPass.uniforms[ "speed" ].value = badTVParams.speed;
-					badTVPass.uniforms[ "rollSpeed" ].value = badTVParams.rollSpeed;
-
-					staticPass.uniforms[ "amount" ].value = staticParams.amount;
-					staticPass.uniforms[ "size" ].value = staticParams.size2;
-
-					rgbPass.uniforms[ "angle" ].value = rgbParams.angle*Math.PI;
-					rgbPass.uniforms[ "amount" ].value = rgbParams.amount;
-
-					filmPass.uniforms[ "sCount" ].value = filmParams.count;
-					filmPass.uniforms[ "sIntensity" ].value = filmParams.sIntensity;
-					filmPass.uniforms[ "nIntensity" ].value = filmParams.nIntensity;
-				}
-
-				function randomizeParams() {
-
-					badTVParams.distortion = Math.random()*10+0.1;
-					badTVParams.distortion2 = 0.5;
-					badTVParams.speed =Math.random()*.3;
-					rgbParams.angle = Math.random()*2;
-					rgbParams.amount = Math.random()*0.03;
-					staticParams.amount = Math.random()*0.2;
-
-					prev = picIndex;
-					do
-						picIndex = Math.floor(Math.random()*6)+1;	
-					while (prev == picIndex);
-					src = "img/" + picIndex + "tvparty.jpg";
-					videoMaterial.map = THREE.ImageUtils.loadTexture(src);
-					videoMaterial.needsUpdate = true;
-
-					onParamsChange();
-				}
-
-
-
-				function onToggleMute(){
-					video.volume  = badTVParams.mute ? 0 : 1;
-				}
-
-				function onToggleShaders(){
-
-					//Add Shader Passes to Composer
-					//order is important 
-					composer = new THREE.EffectComposer( renderer);
-					composer.addPass( renderPass );
-					
-					if (filmParams.show){
-						composer.addPass( filmPass );
-					}
-
-					if (badTVParams.show){
-						composer.addPass( badTVPass );
-					}
-
-					if (rgbParams.show){
-						composer.addPass( rgbPass );
-					}
-
-					if (staticParams.show){
-						composer.addPass( staticPass );
-					}
-
-					composer.addPass( copyPass );
-					copyPass.renderToScreen = true;
-				}
-
-				function animate() {
-
-					shaderTime += 0.01;
-					badTVPass.uniforms[ 'time' ].value =  shaderTime;
-					filmPass.uniforms[ 'time' ].value =  shaderTime;
-					staticPass.uniforms[ 'time' ].value =  shaderTime;
-
-					xtime = Math.sin(shaderTime);
-					if (!pause)
-						badTVParams.distortion = 10000/(1000*shaderTime)+ Math.log(Math.cos((xtime+1)*2)+3.81,1.1)/15;
-					else {
-						
-						badTVParams.distortion = Math.pow(Math.cos((xtime+1)*2)+3.81,1.1)/Math.random()/8*badTVParams.distortion
-					}
-					badTVParams.distortion2 = .5;
-					badTVParams.speed = .3-(Math.sin(Math.cos(4*shaderTime))*.01);
-					rgbParams.angle = 2+Math.cos(xtime)*3;
-					rgbParams.amount = (xtime)*0.004+Math.cos(xtime)*.001;
-					staticParams.amount = .3-(xtime+1)*0.1;
-
-
-					if ( video.readyState === video.HAVE_ENOUGH_DATA ) {
-						if ( videoTexture ) videoTexture.needsUpdate = true;
-					}
-
-					if (!pause) {
-						requestAnimationFrame( animate );				
-						composer.render( 0.1);
-
-						onParamsChange();	
-					}
-					else {
-						requestAnimationFrame( animate );				
-						composer.render( 0.1);
-
-						onParamsChange();	
-					}
-				}
-
-
-				function onResize() {
-					renderer.setSize(window.innerWidth, window.innerHeight);
-					camera.aspect = window.innerWidth / window.innerHeight;
-					camera.updateProjectionMatrix();
-				}
-
-				init();
-				var intervalID = setInterval(function(){
-					randomizeParams();
-				}, 6000);
-				window.onload = function(){
-					$('div.body-fade').addClass('body-fade-hidden');
-					$('div.body-fade').one('transitionend', function(e) {
-					  $('div.body-fade').addClass('display-none');
-					});
-
-					animate();
-
-				};
-			} 	// end WebGL
-
-
-			// If browser doesn't support WebGL
-			else {
-				console.log('WebGL is not supported on this browser. If you are running Safari, go to Preferences > Advanced and make sure "Show Develop menu in menu bar" is checked. From the Develop menu, select "Enable WebGL" and refresh. Or, preferably, run in Chrome or Firefox.');
-				window.onload = function(){
-					$('div.body-fade').addClass('body-fade-hidden');
-					$('div.body-fade').one('transitionend', function(e) {
-						$('div.body-fade').addClass('display-none');
-					});
-
-					$('body').css({
-						"background" : "url('img/tvparty_background_1.png') no-repeat center center fixed",
-						"background-size" : "cover"
-					});
-				};
-			}
-
-
-
-			/* players */
-
-			var tag = document.createElement('script');
-
-			tag.src = "https://www.youtube.com/iframe_api";
-			var firstScriptTag = document.getElementsByTagName('script')[0];
-			firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-			var player1;
-
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="css/vendor.css">
+  
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100" type="text/css">
+    
+    <link rel="stylesheet" href="css/main.css">
+  </head>
+  <body>
+
+    <div id="mobile-placeholder" class="coming-soon">
+      <h6>MOBILE SITE UNDER CONSTRUCTION</h6>
+      <h6>PLEASE VIEW ON DESKTOP</h6>
+    </div>
+
+    <!-- NAV -->
+    <div id="nav">
+      <!-- LOGO -->
+      <h1 class="logo">
+        <a data-toggle="tab" role="tab" href="#home">TV PARTY</a>
+      </h1>
+      <!-- MENU -->
+      <ul class="menu" role="tablist">
+        <li class="active">
+          <a href="#home" data-toggle="tab" role="tab">HOME</a>
+        </li>
+        <li>
+          <a id="nav-eps" href="#ep3" data-toggle="tab" role="tab">
+          <!--<a>-->
+            EPISODES
+          </a>
+          <ul class="submenu expand">
+            <li>
+              <a id="nav-ep3" href="#ep3" data-toggle="tab" role="tab">3 | TVP GOES TO CAMP</a>
+            </li>
+            <li>
+              <a id="nav-ep2" href="#ep2" data-toggle="tab" role="tab">2 | PAJAMA PARTY</a>
+            </li>
+            <li>
+              <a id="nav-ep1" href="#ep1" data-toggle="tab" role="tab">1 | LE BARON</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a id="nav-people" href="#people" data-toggle="tab" role="tab">PEOPLE</a>
+        </li>
+        <li>
+          <a id="nav-otvp" href="#ogtvp" data-toggle="tab" role="tab">ORIGINAL TVP</a>
+        </li>
+        <li>
+          <a id="nav-about" href="#about" data-toggle="tab" role="tab">ABOUT</a>
+        </li>
+      </ul>
+      <!-- FOOTER -->
+      <div class="footer">
+        <div class"sponsors">
+          <div class="sponsors-text">
+            PARTICIPATING SPONSORS
+          </div>
+          <div class="sponsors-logos">
+            <img src="img/cnf.png" />
+            <img src="img/jcrew.png" />
+            <img src="img/momaps1.png" />
+            <img src="img/sleepyjones.png" />
+            <img src="img/redbull.png" />
+            <img src="img/absolutelyx.png" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content">
+      <!-- TODO: dynamically insert alt -->
+      <div class="tab-content">
+        <!-- Home --> 
+        <div class="tab-pane fade in active" id="home">
+<!--           <h1 class="content-title" id="home-title">
+            EPISODE 0: TRAILER
+          </h1> -->
+          <div class="player-container fade" id="home-container">
+            <div id="trailer-player"></div>
+          </div>
+        </div>
+
+        <!-- Episode 3 -->
+        <div class="tab-pane fade" id="ep3">
+<!--           <h1 class="content-title" id="ep3-title">
+            EPISODE 3: THREE
+          </h1> -->
+          <div class="player-container" id="ep3-container">
+            <div id="ep3-player"></div>
+          </div>
+          <div class="people-container ep3-people-container"></div>
+        </div>
+
+       <!-- Episode 2 -->
+        <div class="tab-pane fade" id="ep2">
+<!--           <h1 class="content-title" id="ep2-title">
+            EPISODE 2: PAJAMA PARTY
+          </h1> -->
+          <div class="player-container" id="ep2-container">
+            <div id="ep2-player"></div>
+          </div>
+          <div class="people-container ep2-people-container"></div>
+        </div>
+
+      <!-- Episode 1 -->
+        <div class="tab-pane fade" id="ep1">
+<!--           <h1 class="content-title" id="ep1-title">
+            EPISODE 1: THE MIRACULOUS RESURRECTION
+          </h1> -->
+          <div class="player-container" id="ep1-container">
+            <div id="ep1-player"></div>
+          </div>
+          <div class="people-container ep1-people-container"></div>
+        </div>
+
+        <!-- Guests -->
+        <div class="tab-pane fade" id="people">
+          <h1 class="content-title" id="ep3-people-title">
+            EPISODE 3
+          </h1>
+          <div class="people-container ep3-people-container"></div>
+          <h1 class="content-title" id="ep2-people-title">
+            EPISODE 2
+          </h1>
+          <div class="people-container ep2-people-container"></div>
+          <h1 class="content-title" id="ep1-people-title">
+            EPISODE 1
+          </h1>
+          <div class="people-container ep1-people-container"></div>
+        </div>
+
+        <!-- Original TVP -->
+        <div class="tab-pane fade" id="ogtvp">
+          <div class="coming-soon">
+            <h1>COMING SOON</h1>
+          </div>
+        </div>
+
+        <!-- About -->
+        <div class="tab-pane fade" id="about">
+           <div class="coming-soon">
+             <h1>COMING SOON</h1>
+           </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/vendor.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/tab.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/transition.min.js"></script>
+    <script src="js/templates.js"></script>
+
+    <!-- maybe make all these main.js or home.js or something -->
+    <!-- gotta make this a general thing (browserify) that can get specific content -->
+
+    <script src="js/index.js"></script>
+
+    <script>
+
+      // YT API
+
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      var trailerPlayer;
+      var ep3Player, ep2Player, ep1Player;
       function onYouTubeIframeAPIReady() {
-			  player1 = new YT.Player('ep1', {
-			    events: {
-			      'onStateChange': onPlayerStateChange
-			    }
-        }); 
-			}
 
-      function onPlayerStateChange(event) {
-				if (event.data == YT.PlayerState.PLAYING) {
-            pause = true;
-				    $('#marquee').addClass('marquee-hidden');
-				    if (webgl_support())
-						renderer.domElement.removeEventListener('click', randomizeParams, false);
-			    } 
-        else if (event.data == YT.PlayerState.PAUSED) {
-					pause = false;
-					shaderTime = 0;
-					$('#marquee').removeClass('marquee-hidden');
-					if (webgl_support())
-						renderer.domElement.addEventListener('click', randomizeParams, false);
-				}
-			}
+        function ytOptions(ytID) {
+          var opts = {
+            height: '390',
+            width: '640',
+            playerVars: {
+              autohide: 1,
+              color: 'white',
+              rel: 0,
+              showinfo: 1
+            },
+            events: {
+              'onReady': onPlayerReady
+            }
+          };
+          if (ytID.substring(0,2) == 'PL') {
+            opts.playerVars.listType = 'playlist';
+            opts.playerVars.list = ytID;
+          }
+          else {
+            opts.videoId = ytID; 
+          }
+          return opts;
+        }
+
+        trailerPlayer = new YT.Player('trailer-player',
+          ytOptions('NFvccjTCRIA'));
+
+        ep3Player = new YT.Player('ep3-player',
+          ytOptions('PLUbf1iqqRbnj4iaKzy2z9JXmRW_6cDvVA'));
+
+        ep2Player = new YT.Player('ep2-player',
+          ytOptions('PLUbf1iqqRbnh8GJYy4No3gii2PO4xGarp'));
+
+        ep1Player = new YT.Player('ep1-player',
+          ytOptions('PLUbf1iqqRbnjKajV2-Tk6duscZNYZ8s58'));
+      }
+
+      function onPlayerReady(event) {
+        // fitvids
+        $('.player-container').fitVids();;
+        if (!$('#home-container').hasClass('in'))
+          setTimeout(function() {
+           $('#home-container').addClass('in');
+          }, 500);
+      }
+      
 
 
-
-			$(document).ready(function(){
-
-				$("#thumb").click(function(){
-					$(this).next().css("display", "block");
-					this.css("display", "none");
-				});
-
-
-
-			  /* crazy title */  
-
-			  var $titleContainer = $("#title-container"),
-			    $spans = $titleContainer.find("span");
-			  
-			  $titleContainer.fitText(0.5, { maxFontSize: "300px" });
-			  
-			  $("body").mousemove(function(e) {
-			    handleMouseMove(e);
-			  });
-			  
-			  // update z-index before handler to show trails before mousemove
-			  $spans.each(function(i,span) {
-			    $(span).css({
-			      zIndex: 9 - i
-			    });
-			  });
-
-			  function handleMouseMove(e) {
-			    xPos = -(e.pageX - $(window).width()/2);
-			    yPos = -(e.pageY - $(window).height()/2);
-			    
-			    $spans.each(function(i,span) {
-			      $(span).css({
-			        left: xPos / (1/i) / (30 - i),
-			        top: yPos / (1/i) / 15,
-			      });
-			    });
-			  }
-			  
-			  function createTrails() {
-			    $spans.each(function(i,span) {
-			      $(span).css({
-			        fontSize: 1.1 - i/8 + "em"
-			      });
-			    });
-			  }
-			  
-			  function changeColors() {
-			    $spans.each(function(i,span) {
-			      color1 = 200 - i*20 + Math.floor(Math.random() * 20);
-			      color2 = 200 - i*20 + Math.floor(Math.random() * 20);
-			      color3 = 200 - i*20 + Math.floor(Math.random() * 20);
-			      $(span).css({
-			        textShadow:"0 0 " + (5 + i) + "px rgba(" + color1 + "," + color2 + "," + color3 + "," + 1/i + ")"
-			      });
-			    });
-			        
-			    color1 = 255 - Math.floor(Math.random() * 20);
-			    color2 = 255 - Math.floor(Math.random() * 20);
-			    color3 = 255 - Math.floor(Math.random() * 20);
-			    
-			    $titleContainer.css({
-			      marginTop:Math.floor(Math.random() * 2) - 1 + "px",
-			      marginLeft:Math.floor(Math.random() * 2) - 1 + "px"
-			    });
-			    
-			  }
-			  
-			  createTrails();
-			  
-			  setInterval(function() {
-			    changeColors();
-			  },30);
+    </script>
 
 
 
-			  $(".fitvids").fitVids();
-			});
-
-
-		</script>
-	</body>
+  </body>
 </html>
