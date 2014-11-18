@@ -5,8 +5,9 @@
     <link rel="stylesheet" href="css/vendor.css">
   
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100" type="text/css">
-    
+
     <link rel="stylesheet" href="css/main.css">
+
   </head>
   <body>
 
@@ -19,12 +20,12 @@
     <div id="nav">
       <!-- LOGO -->
       <h1 class="logo">
-        <a data-toggle="tab" role="tab" href="#home">TV PARTY</a>
+        <a id="nav-logo" data-toggle="tab" role="tab" href="#home">TV PARTY</a>
       </h1>
       <!-- MENU -->
       <ul class="menu" role="tablist">
         <li class="active">
-          <a href="#home" data-toggle="tab" role="tab">HOME</a>
+          <a id="nav-home" href="#home" data-toggle="tab" role="tab">HOME</a>
         </li>
         <li>
           <a id="nav-eps" href="#ep3" data-toggle="tab" role="tab">
@@ -33,13 +34,13 @@
           </a>
           <ul class="submenu expand">
             <li>
-              <a id="nav-ep3" href="#ep3" data-toggle="tab" role="tab">3 | TVP GOES TO CAMP</a>
+              <a id="nav-ep3" class="nav-ep" href="#ep3" data-toggle="tab" role="tab">3 | TVP GOES TO CAMP</a>
             </li>
             <li>
-              <a id="nav-ep2" href="#ep2" data-toggle="tab" role="tab">2 | PAJAMA PARTY</a>
+              <a id="nav-ep2" class="nav-ep" href="#ep2" data-toggle="tab" role="tab">2 | PAJAMA PARTY</a>
             </li>
             <li>
-              <a id="nav-ep1" href="#ep1" data-toggle="tab" role="tab">1 | LE BARON</a>
+              <a id="nav-ep1" class="nav-ep" href="#ep1" data-toggle="tab" role="tab">1 | LE BARON</a>
             </li>
           </ul>
         </li>
@@ -219,12 +220,24 @@
            $('#home-container').addClass('in');
           }, 500);
       }
-      
 
-
+      /* Pause hidden videos when clicking to new nav item */
+      $('#nav-logo, .menu a').click(function() {
+        var players = [trailerPlayer, ep1Player, ep2Player, ep3Player];
+        var index = -1;
+        var navEpId = $(this).attr('id');
+        if (navEpId == 'nav-logo' || navEpId == 'nav-home')
+          index = 0;
+        else if (navEpId == 'nav-eps')
+          index = 3;
+        else if (navEpId == 'nav-ep1' || navEpId == 'nav-ep2' || navEpId == 'nav-ep3')
+          index = navEpId.slice(-1);
+        if (index >= 0)
+          players.splice(index, 1);
+        for (var i=0; i<players.length; i++) {
+          players[i].pauseVideo();
+        }
+      });
     </script>
-
-
-
   </body>
 </html>
