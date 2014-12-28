@@ -11936,74 +11936,6 @@ var __module0__ = (function(__dependency1__, __dependency2__, __dependency3__, _
   return __module0__;
 })();
 
-/*global jQuery */
-/*jshint browser:true */
-/*!
-* FitVids 1.1
-*
-* Copyright 2013, Chris Coyier - http://css-tricks.com + Dave Rupert - http://daverupert.com
-* Credit to Thierry Koblentz - http://www.alistapart.com/articles/creating-intrinsic-ratios-for-video/
-* Released under the WTFPL license - http://sam.zoy.org/wtfpl/
-*
-*/
-
-(function( $ ){
-
-  "use strict";
-
-  $.fn.fitVids = function( options ) {
-    var settings = {
-      customSelector: null
-    };
-
-    if(!document.getElementById('fit-vids-style')) {
-      // appendStyles: https://github.com/toddmotto/fluidvids/blob/master/dist/fluidvids.js
-      var head = document.head || document.getElementsByTagName('head')[0];
-      var css = '.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}';
-      var div = document.createElement('div');
-      div.innerHTML = '<p>x</p><style id="fit-vids-style">' + css + '</style>';
-      head.appendChild(div.childNodes[1]);
-    }
-
-    if ( options ) {
-      $.extend( settings, options );
-    }
-
-    return this.each(function(){
-      var selectors = [
-        "iframe[src*='player.vimeo.com']",
-        "iframe[src*='youtube.com']",
-        "iframe[src*='youtube-nocookie.com']",
-        "iframe[src*='kickstarter.com'][src*='video.html']",
-        "object",
-        "embed"
-      ];
-
-      if (settings.customSelector) {
-        selectors.push(settings.customSelector);
-      }
-
-      var $allVideos = $(this).find(selectors.join(','));
-      $allVideos = $allVideos.not("object object"); // SwfObj conflict patch
-
-      $allVideos.each(function(){
-        var $this = $(this);
-        if (this.tagName.toLowerCase() === 'embed' && $this.parent('object').length || $this.parent('.fluid-width-video-wrapper').length) { return; }
-        var height = ( this.tagName.toLowerCase() === 'object' || ($this.attr('height') && !isNaN(parseInt($this.attr('height'), 10))) ) ? parseInt($this.attr('height'), 10) : $this.height(),
-            width = !isNaN(parseInt($this.attr('width'), 10)) ? parseInt($this.attr('width'), 10) : $this.width(),
-            aspectRatio = height / width;
-        if(!$this.attr('id')){
-          var videoID = 'fitvid' + Math.floor(Math.random()*999999);
-          $this.attr('id', videoID);
-        }
-        $this.wrap('<div class="fluid-width-video-wrapper"></div>').parent('.fluid-width-video-wrapper').css('padding-top', (aspectRatio * 100)+"%");
-        $this.removeAttr('height').removeAttr('width');
-      });
-    });
-  };
-// Works with either jQuery or Zepto
-})( window.jQuery || window.Zepto );
-
 /*!
  * getStyleProperty v1.0.3
  * original by kangax
@@ -14968,3 +14900,77 @@ if ( typeof define === 'function' && define.amd ) {
   };
 // Works with either jQuery or Zepto
 })( window.jQuery || window.Zepto );
+
+/*! fluidvids.js v2.4.1 | (c) 2014 @toddmotto | https://github.com/toddmotto/fluidvids */
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory;
+  } else {
+    root.fluidvids = factory();
+  }
+})(this, function () {
+
+  'use strict';
+
+  var fluidvids = {
+    selector: ['iframe', 'object'],
+    players: ['www.youtube.com', 'player.vimeo.com']
+  };
+
+  var css = [
+    '.fluidvids {',
+      'width: 100%; max-width: 100%; position: relative;',
+    '}',
+    '.fluidvids-item {',
+      'position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;',
+    '}'
+  ].join('');
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+
+  function matches (src) {
+    return new RegExp('^(https?:)?\/\/(?:' + fluidvids.players.join('|') + ').*$', 'i').test(src);
+  }
+
+  function getRatio (height, width) {
+    return ((parseInt(height, 10) / parseInt(width, 10)) * 100) + '%';
+  }
+
+  function fluid (elem) {
+    if (!matches(elem.src) && !matches(elem.data) || !!elem.getAttribute('data-fluidvids')) return;
+    var wrap = document.createElement('div');
+    elem.parentNode.insertBefore(wrap, elem);
+    elem.className += (elem.className ? ' ' : '') + 'fluidvids-item';
+    elem.setAttribute('data-fluidvids', 'loaded');
+    wrap.className += 'fluidvids';
+    wrap.style.paddingTop = getRatio(elem.height, elem.width);
+    wrap.appendChild(elem);
+  }
+
+  function addStyles () {
+    var div = document.createElement('div');
+    div.innerHTML = '<p>x</p><style>' + css + '</style>';
+    head.appendChild(div.childNodes[1]);
+  }
+
+  fluidvids.render = function () {
+    var nodes = document.querySelectorAll(fluidvids.selector.join());
+    var i = nodes.length;
+    while (i--) {
+      fluid(nodes[i]);
+    }
+  };
+
+  fluidvids.init = function (obj) {
+    for (var key in obj) {
+      fluidvids[key] = obj[key];
+    }
+    fluidvids.render();
+    addStyles();
+  };
+
+  return fluidvids;
+
+});
