@@ -142,9 +142,6 @@
 
         <!-- Original TVP -->
         <div class="tab-pane fade" id="ogtvp">
-          <div class="banner">
-            <img src="img/glenn_banner.jpg" />
-          </div>
           <div id="ogtvp-content" class="copy-content">
             <div class="intro big-intro">
               The Story of Glenn O'Brien's TV Party
@@ -178,9 +175,6 @@
 
         <!-- About -->
         <div class="tab-pane fade" id="about">
-          <div class="banner">
-            <img src="img/glenn_banner.jpg" />
-          </div>
           <div id="about-content" class="copy-content">
             <div class="big-intro">After a nearly 30 year hiatus,</div>
             <div>we are proud to relaunch TV Party for a new digital era. We shot 3 episodes&mdash;The Miraculous Resurrection at LeBaron, The Pajama Party at Lafayette House, and TV Party Goes to Camp at MoMA PS1&mdash;and are shooting new episodes as we go. As reimagined by Glenn for a new digital age, the show is no longer constrained by the television studio and is now done on location as a real party. No longer done for public access cable television, it is now being being made for the Internet. The show is still "the cocktail party that is also a political party" and the aim is still to overthrow the government, only the medium has changed. The Internet is the new public access and TV Party is still the show where "if you can find it, you can come."
@@ -211,14 +205,13 @@
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      var trailerPlayer;
-      var ep3Player, ep2Player, ep1Player;
+      var trailerPlayer, ep3Player, ep2Player, ep1Player;
       function onYouTubeIframeAPIReady() {
 
         function ytOptions(ytID) {
           var opts = {
-            height: '390',
-            width: '640',
+            width: '1280',
+            height: '720',
             playerVars: {
               autohide: 1,
               color: 'white',
@@ -252,10 +245,7 @@
           ytOptions('PLUbf1iqqRbnjKajV2-Tk6duscZNYZ8s58'));
       }
 
-      function onPlayerReady(event) {
-        // fitvids
-        // $('.player-container').fitVids();
-       
+      function onPlayerReady(event) {       
         fluidvids.init({
           selector: ['iframe'],
           players: ['www.youtube.com']

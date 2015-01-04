@@ -96,7 +96,8 @@ body {
     height: 100%;
     /*  border-right: 1px solid $off-white; */
     color: rgba(255, 255, 255, 0.9);
-    background: rgba(0, 0, 0, 0.83);
+    /*background: transparentize($black, 0.1);*/
+    background: rgba(0, 0, 0, 0.93);
     box-shadow: 1px 0 7px 1px rgba(0, 0, 0, 0.93);
     border-right: 1px solid rgba(179, 179, 179, 0.9);
     box-sizing: border-box;
@@ -288,64 +289,48 @@ body {
   right: 0;
   margin-left: 200px;
   color: rgba(255, 255, 255, 0.9);
-  /* Bootstrap tab styles */
+  /* Bootstrap tab styles, SO'd */
+  /* End Boostrap piece of shit */
 }
 .content .tab-content > .tab-pane {
-  display: none;
+  /*display: none;*/
+  display: block;
+  height: 0;
+  overflow-y: hidden;
 }
 .content .tab-content > .active {
-  display: block;
+  /*display: block;*/
+  height: auto;
 }
 .content .content-title {
   margin: 15px 0 15px 15px;
 }
 .content .player-container {
   position: relative;
-}
-.content .player-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-image: url("../img/trailer_overlay.png");
-  background-size: cover;
   z-index: 1;
 }
-.content .banner {
-  position: fixed;
-  bottom: 0;
-  /*height: 500px;*/
-  width: 100%;
-  /*overflow: hidden;*/
+.content #ogtvp {
+  background: url("../img/glenn_ogtvp.jpg") no-repeat fixed center;
+  background-size: cover;
 }
-.content .banner img {
-  position: relative;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-      -ms-transform: translateX(-50%);
-          transform: translateX(-50%);
-  /*top: -50%;*/
+.content #about {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: url("../img/glenn_about.jpg") no-repeat fixed center;
+  background-size: cover;
 }
 .content .copy-content {
-  position: absolute;
+  position: relative;
   left: 0;
   right: 0;
   padding: 40px 80px;
   margin-top: 480px;
-  background: rgba(0, 0, 0, 0.7);
-}
-.content #about-content {
-  font-size: 24px;
-  line-height: 38px;
-  margin-top: 0;
-  padding-top: 150px;
-  top: 0;
-  height: 100%;
 }
 .content #ogtvp-content {
   font-size: 18px;
   line-height: 29px;
+  background: rgba(0, 0, 0, 0.75);
 }
 .content .intro {
   font-weight: 700;
@@ -362,6 +347,12 @@ body {
 }
 .content .big-intro ~ div {
   padding: 20px 80px 20px 120px;
+}
+.content #about-content {
+  margin-top: 0;
+  padding-top: 150px;
+  font-size: 24px;
+  line-height: 38px;
 }
 
 @media only screen and (min-width: 415px) {
