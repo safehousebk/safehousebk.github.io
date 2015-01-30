@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/vendor.css">
   
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100" type="text/css">
@@ -10,14 +10,12 @@
 
   </head>
   <body>
-    <!-- WE COMIN FOR YA -->
-    <div id="mobile-placeholder">
-      <h6>MOBILE SITE UNDER CONSTRUCTION</h6>
-      <h6>IN THE MEANTIME,<br />VISIT US ON<br/><a href="https://www.youtube.com/user/TVPartyLive">YOUTUBE</a></br>FOR FULL EPISODES<br />AND CLIPS</h6>
-    </div>
+    
+    <input type="checkbox" id="nav-trigger" class="nav-trigger">
+    <label for="nav-trigger"></label>
 
     <!-- NAV -->
-    <div id="nav">
+    <nav>
       <!-- LOGO -->
       <h1 class="logo">
         <a id="nav-logo" data-toggle="tab" role="tab" href="#home">TV PARTY</a>
@@ -73,30 +71,42 @@
               <span class="fa fa-vimeo-square social" id="vi-logo"></span>
           </a>
         </div>
-        <div class="horiz-divider"></div>
-        <div class"sponsors">
-          <div class="sponsors-text">
-            PARTICIPATING SPONSORS
-          </div>
-          <div class="sponsors-logos">
-            <img src="img/cnf.png" />
-            <img src="img/jcrew.png" />
-            <img src="img/momaps1.png" />
-            <img src="img/sleepyjones.png" />
-            <img src="img/redbull.png" />
-            <img src="img/absolutelyx.png" />
-          </div>
-        </div>
+        <!-- <div class="horiz-divider"></div> -->
       </div>
-    </div>
+    </nav>
 
     <!-- CONTENT -->
     <div class="content">
+      <div id="topbar">
+        <!-- <div id="logo-wrap"> -->
+        <h1 class="logo">
+          <a id="nav-logo" data-toggle="tab" role="tab" href="#home">TV PARTY</a>
+        </h1>
+        <!-- </div> -->
+      </div>
+<!--       <div class="spinner-wrap">
+        <div class="sprite-spinner">
+          <img src="img/loading.png" />
+        </div>
+      </div> -->
       <div class="tab-content">
         <!-- Home --> 
-        <div class="tab-pane fade in active" id="home">
-          <div class="player-container fade" id="home-container">
+        <div class="tab-pane fade active" id="home">
+          <div class="player-container" id="home-container">
             <div id="trailer-player"></div>
+            <div class="sponsors">
+              <div class="sponsors-text">
+                PARTICIPATING SPONSORS
+              </div>
+              <div class="sponsors-logos">
+                <img src="img/cnf.png" />
+                <img src="img/jcrew.png" />
+                <img src="img/momaps1.png" />
+                <img src="img/sleepyjones.png" />
+                <img src="img/redbull.png" />
+                <img src="img/absolutelyx.png" />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -142,9 +152,10 @@
 
         <!-- Original TVP -->
         <div class="tab-pane fade" id="ogtvp">
+          <!-- <div id="ogtvp-background" class="copy-background"></div> -->
           <div id="ogtvp-content" class="copy-content">
             <div class="intro big-intro">
-              The Story of Glenn O'Brien's TV Party
+              The Story of Glenn O'Brien's <em>TV Party</em>
               <div class="sub-intro">
                 As told by Glenn O'Brien to <em>Vice Magazine</em>
               </div>
@@ -177,7 +188,9 @@
         <div class="tab-pane fade" id="about">
           <div id="about-content" class="copy-content">
             <div class="big-intro">After a nearly 30 year hiatus,</div>
-            <div>we are proud to relaunch TV Party for a new digital era. We shot 3 episodes&mdash;The Miraculous Resurrection at LeBaron, The Pajama Party at Lafayette House, and TV Party Goes to Camp at MoMA PS1&mdash;and are shooting new episodes as we go. As reimagined by Glenn for a new digital age, the show is no longer constrained by the television studio and is now done on location as a real party. No longer done for public access cable television, it is now being being made for the Internet. The show is still "the cocktail party that is also a political party" and the aim is still to overthrow the government, only the medium has changed. The Internet is the new public access and TV Party is still the show where "if you can find it, you can come."
+            <div>we are proud to relaunch <em>TV Party</em> for a new digital era. We shot 3 episodes&mdash;"The Miraculous Resurrection" at LeBaron, "The Pajama Party" at Lafayette House, and "<em>TV Party</em> Goes to Camp" at MoMA PS1&mdash;and are shooting new episodes as we go. As reimagined by Glenn for a new digital age, the show is no longer constrained by the television studio and is now done on location as a real party. No longer done for public access cable television, it is now being being made for the Internet. The show is still "the cocktail party that is also a political party" and the aim is still to overthrow the government, only the medium has changed. The Internet is the new public access and <em
+              >TV Party</em
+> is still the show where "if you can find it, you can come."
             </div>
           </div>
 
@@ -190,9 +203,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/tab.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/transition.min.js"></script>
     <script src="js/templates.js"></script>
-
-    <!-- maybe make all these main.js or home.js or something -->
-    <!-- gotta make this a general thing (browserify) that can get specific content -->
 
     <script src="js/index.js"></script>
 
@@ -215,6 +225,7 @@
             playerVars: {
               autohide: 1,
               color: 'white',
+              origin: 'http://www.tvparty.tv/',
               rel: 0,
               showinfo: 1
             },
@@ -243,6 +254,7 @@
 
         ep1Player = new YT.Player('ep1-player',
           ytOptions('PLUbf1iqqRbnjKajV2-Tk6duscZNYZ8s58'));
+
       }
 
       function onPlayerReady(event) {       
@@ -251,10 +263,10 @@
           players: ['www.youtube.com']
         });
 
-        if (!$('#home-container').hasClass('in'))
+        if (!$('#home').hasClass('in'))
           setTimeout(function() {
-           $('#home-container').addClass('in');
-          }, 500);
+           $('#home').addClass('in');
+          }, 100);
       }
 
       /* Pause hidden videos when clicking to new nav item */
@@ -274,6 +286,8 @@
           players[i].pauseVideo();
         }
       });
+
+
     </script>
   </body>
 </html>
