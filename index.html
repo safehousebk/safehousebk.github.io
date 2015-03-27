@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/vendor.css">
   
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100" type="text/css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300" type="text/css">
 
     <link rel="stylesheet" href="css/main.css">
 
@@ -26,11 +26,13 @@
           <a id="nav-home" href="#home" data-toggle="tab" role="tab">HOME</a>
         </li>
         <li>
-          <a id="nav-eps" href="#ep3" data-toggle="tab" role="tab">
-          <!--<a>-->
+          <a id="nav-eps" href="#ep4" data-toggle="tab" role="tab">
             EPISODES
           </a>
           <ul class="submenu">
+            <li>
+              <a id="nav-ep4" class="nav-ep" href="#ep4" data-toggle="tab" role="tab">4 | MIAMI</a>
+            </li>
             <li>
               <a id="nav-ep3" class="nav-ep" href="#ep3" data-toggle="tab" role="tab">3 | TVP GOES TO CAMP</a>
             </li>
@@ -78,22 +80,16 @@
     <!-- CONTENT -->
     <div class="content">
       <div id="topbar">
-        <!-- <div id="logo-wrap"> -->
         <h1 class="logo">
           <a id="nav-logo" data-toggle="tab" role="tab" href="#home">TV PARTY</a>
         </h1>
-        <!-- </div> -->
       </div>
-<!--       <div class="spinner-wrap">
-        <div class="sprite-spinner">
-          <img src="img/loading.png" />
-        </div>
-      </div> -->
       <div class="tab-content">
         <!-- Home --> 
         <div class="tab-pane fade active" id="home">
           <div class="player-container" id="home-container">
-            <div id="trailer-player"></div>
+            <!-- <div id="trailer-player"></div> -->
+            <iframe id="trailer-player" src="//player.vimeo.com/video/95888611?api=1&player_id=trailer-player" width="630" height="354" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
             <div class="sponsors">
               <div class="sponsors-text">
                 PARTICIPATING SPONSORS
@@ -110,10 +106,20 @@
           </div>
         </div>
 
+        <!-- Episode 4 -->
+        <div class="tab-pane fade" id="ep4">
+          <div class="player-container" id="ep4-container">
+            <!-- <div id="ep3-player"></div> -->
+            <iframe id="ep4-player" src="//player.vimeo.com/video/117675868?api=1&player_id=ep4-player" width="630" height="354" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+          <!-- <div class="people-container ep4-people-container"></div> -->
+        </div>
+
         <!-- Episode 3 -->
         <div class="tab-pane fade" id="ep3">
           <div class="player-container" id="ep3-container">
-            <div id="ep3-player"></div>
+            <!-- <div id="ep3-player"></div> -->
+            <iframe id="ep3-player" src="//player.vimeo.com/video/106021847?api=1&player_id=ep3-player" width="630" height="354" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
           </div>
           <div class="people-container ep3-people-container"></div>
         </div>
@@ -121,7 +127,8 @@
        <!-- Episode 2 -->
         <div class="tab-pane fade" id="ep2">
           <div class="player-container" id="ep2-container">
-            <div id="ep2-player"></div>
+            <!-- <div id="ep2-player"></div> -->
+            <iframe id="ep2-player" src="//player.vimeo.com/video/106021846?api=1&player_id=ep2-player" width="630" height="354" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
           </div>
           <div class="people-container ep2-people-container"></div>
         </div>
@@ -129,7 +136,8 @@
       <!-- Episode 1 -->
         <div class="tab-pane fade" id="ep1">
           <div class="player-container" id="ep1-container">
-            <div id="ep1-player"></div>
+            <!-- <div id="ep1-player"></div> -->
+            <iframe id="ep1-player" src="//player.vimeo.com/video/106021845?api=1&player_id=ep1-player" width="630" height="354" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
           </div>
           <div class="people-container ep1-people-container"></div>
         </div>
@@ -202,92 +210,8 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/tab.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.2.0/js/transition.min.js"></script>
+    <script src="//f.vimeocdn.com/js/froogaloop2.min.js"></script>
     <script src="js/templates.js"></script>
-
-    <script src="js/index.js"></script>
-
-    <script>
-
-      // YT API
-
-      var tag = document.createElement('script');
-      tag.src = "https://www.youtube.com/iframe_api";
-      var firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-      var trailerPlayer, ep3Player, ep2Player, ep1Player;
-      function onYouTubeIframeAPIReady() {
-
-        function ytOptions(ytID) {
-          var opts = {
-            width: '1280',
-            height: '720',
-            playerVars: {
-              autohide: 1,
-              color: 'white',
-              origin: 'http://www.tvparty.tv/',
-              rel: 0,
-              showinfo: 1
-            },
-            events: {
-              'onReady': onPlayerReady
-            }
-          };
-          if (ytID.substring(0,2) == 'PL') {
-            opts.playerVars.listType = 'playlist';
-            opts.playerVars.list = ytID;
-          }
-          else {
-            opts.videoId = ytID; 
-          }
-          return opts;
-        }
-
-        trailerPlayer = new YT.Player('trailer-player',
-          ytOptions('NFvccjTCRIA'));
-
-        ep3Player = new YT.Player('ep3-player',
-          ytOptions('PLUbf1iqqRbnj4iaKzy2z9JXmRW_6cDvVA'));
-
-        ep2Player = new YT.Player('ep2-player',
-          ytOptions('PLUbf1iqqRbnh8GJYy4No3gii2PO4xGarp'));
-
-        ep1Player = new YT.Player('ep1-player',
-          ytOptions('PLUbf1iqqRbnjKajV2-Tk6duscZNYZ8s58'));
-
-      }
-
-      function onPlayerReady(event) {       
-        fluidvids.init({
-          selector: ['iframe'],
-          players: ['www.youtube.com']
-        });
-
-        if (!$('#home').hasClass('in'))
-          setTimeout(function() {
-           $('#home').addClass('in');
-          }, 100);
-      }
-
-      /* Pause hidden videos when clicking to new nav item */
-      $('#nav-logo, .menu a').click(function() {
-        var players = [trailerPlayer, ep1Player, ep2Player, ep3Player];
-        var index = -1;
-        var navEpId = $(this).attr('id');
-        if (navEpId == 'nav-logo' || navEpId == 'nav-home')
-          index = 0;
-        else if (navEpId == 'nav-eps')
-          index = 3;
-        else if (navEpId == 'nav-ep1' || navEpId == 'nav-ep2' || navEpId == 'nav-ep3')
-          index = navEpId.slice(-1);
-        if (index >= 0)
-          players.splice(index, 1);
-        for (var i=0; i<players.length; i++) {
-          players[i].pauseVideo();
-        }
-      });
-
-
-    </script>
+    <script src="js/main.js"></script>
   </body>
 </html>
